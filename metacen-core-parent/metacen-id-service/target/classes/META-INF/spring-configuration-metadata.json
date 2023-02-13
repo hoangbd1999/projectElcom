@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "com.elcom.metacen.id.upload.FileStorageConfig",
+      "sourceType": "com.elcom.metacen.id.upload.FileStorageConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "com.elcom.metacen.id.upload.FileStorageConfig"
+    }
+  ],
+  "hints": []
+}

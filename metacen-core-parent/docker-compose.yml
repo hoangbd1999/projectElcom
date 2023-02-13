@@ -1,0 +1,329 @@
+version: '2.4'
+
+services:
+  metacen-gateway-service:
+    build: ./metacen-gateway-service
+    container_name: metacen-gateway-service
+    image: metacen-gateway-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 512M
+    ports:
+      - 9681:9681
+      - 9680:9680
+    volumes:
+      - ./metacen-gateway-service/config:/config
+      - ./metacen-gateway-service/logs:/logs
+    depends_on:
+      - metacen-abac-service
+
+  metacen-abac-service:
+    build: ./metacen-abac-service
+    container_name: metacen-abac-service
+    image: metacen-abac-service:latest
+    mem_limit: 1024m
+    mem_reservation: 512M
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - 9602:9602
+    depends_on:
+      - metacen-id-service
+    volumes:
+      - ./metacen-abac-service/config:/config
+      - ./metacen-abac-service/logs:/logs
+      
+  metacen-upload-service:
+    build: ./metacen-upload-service
+    container_name: metacen-upload-service
+    image: metacen-upload-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 256M
+    ports:
+      - 9683:9683
+      - 9883:9883
+    depends_on:
+      - metacen-id-service
+    volumes:
+      - ./metacen-upload-service/config:/config
+      - ./metacen-upload-service/logs:/logs    
+      - ./metacen-upload-service/upload:/upload
+      - /ttttbien1:/ttttbien1
+      - /ttttbien2:/ttttbien2
+      
+  metacen-notify-service:
+    build: ./metacen-notify-service
+    container_name: metacen-notify-service
+    image: metacen-notify-service:latest
+    mem_limit: 512m
+    mem_reservation: 256M
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - 9604:9604
+    depends_on:
+      - metacen-id-service
+      - metacen-abac-service
+    volumes:
+      - ./metacen-notify-service/config:/config
+      - ./metacen-notify-service/logs:/logs
+    network_mode: host
+
+  metacen-id-service:
+    build: ./metacen-id-service
+    container_name: metacen-id-service
+    image: metacen-id-service:latest
+    mem_limit: 1024m
+    mem_reservation: 512M
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - 9601:9601
+    volumes:
+      - ./metacen-id-service/config:/config
+      - ./metacen-id-service/logs:/logs
+    depends_on:
+      - metacen-menu-management-service
+    network_mode: host  
+
+  metacen-menu-management-service:
+    build: ./metacen-menu-management-service
+    container_name: metacen-menu-management-service
+    image: metacen-menu-management-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 256m
+    mem_reservation: 128M
+    ports:
+      - 9603:9603
+    volumes:
+      - ./metacen-menu-management-service/config:/config
+      - ./metacen-menu-management-service/logs:/logs
+
+  metacen-contact-service:
+    build: ./metacen-contact-service
+    container_name: metacen-contact-service
+    image: metacen-contact-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 512M
+    ports:
+      - 9605:9605
+    volumes:
+      - ./metacen-contact-service/config:/config
+      - ./metacen-contact-service/logs:/logs
+    network_mode: host
+
+  metacen-mapping-data-service:
+    build: ./metacen-mapping-data-service
+    container_name: metacen-mapping-data-service
+    image: metacen-mapping-data-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9606:9606
+    volumes:
+      - ./metacen-mapping-data-service/config:/config
+      - ./metacen-mapping-data-service/logs:/logs
+    network_mode: host
+
+  metacen-raw-data-service:
+    build: ./metacen-raw-data-service
+    container_name: metacen-raw-data-service
+    image: metacen-raw-data-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 512M
+    ports:
+      - 9607:9607
+    volumes:
+      - ./metacen-raw-data-service/config:/config
+      - ./metacen-raw-data-service/logs:/logs
+      - /ttttbien1:/ttttbien1
+      - /ttttbien2:/ttttbien2
+    network_mode: host
+
+  metacen-data-process-config-service:
+    build: ./metacen-data-process-config-service
+    container_name: metacen-data-process-config-service
+    image: metacen-data-process-config-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9608:9608
+    volumes:
+      - ./metacen-data-process-config-service/config:/config
+      - ./metacen-data-process-config-service/logs:/logs
+    network_mode: host
+
+  metacen-enrich-data-service:
+    build: ./metacen-enrich-data-service
+    container_name: metacen-enrich-data-service
+    image: metacen-enrich-data-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 512M
+    ports:
+      - 9609:9609
+    volumes:
+      - ./metacen-enrich-data-service/config:/config
+      - ./metacen-enrich-data-service/logs:/logs
+      - /ttttbien1:/ttttbien1
+      - /ttttbien2:/ttttbien2
+    network_mode: host
+
+  metacen-comment-service:
+    build: ./metacen-comment-service
+    container_name: metacen-comment-service
+    image: metacen-comment-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9610:9610
+    volumes:
+      - ./metacen-comment-service/config:/config
+      - ./metacen-comment-service/logs:/logs
+    network_mode: host
+
+  metacen-saga-service:
+    build: ./metacen-saga-service
+    container_name: metacen-saga-service
+    image: metacen-saga-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9611:9611
+    volumes:
+      - ./metacen-saga-service/config:/config
+      - ./metacen-saga-service/logs:/logs
+    network_mode: host
+
+  metacen-elasticsearch-service:
+    build: ./metacen-elasticsearch-service
+    container_name: metacen-elasticsearch-service
+    image: metacen-elasticsearch-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9612:9612
+    volumes:
+      - ./metacen-elasticsearch-service/config:/config
+      - ./metacen-elasticsearch-service/logs:/logs
+    network_mode: host
+
+  metacen-report-service:
+    build: ./metacen-report-service
+    container_name: metacen-report-service
+    image: metacen-report-service:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1024m
+    mem_reservation: 512M
+    ports:
+      - 9613:9613
+    volumes:
+      - ./metacen-report-service/config:/config
+      - ./metacen-report-service/logs:/logs
+    network_mode: host
+
+  metacen-collector-vsat-data:
+    build: ./metacen-collector-vsat-data
+    container_name: metacen-collector-vsat-data
+    image: metacen-collector-vsat-data:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 2048m
+    mem_reservation: 512M
+    ports:
+      - 9005:9005
+    volumes:
+      - ./metacen-collector-vsat-data/config:/config
+      - ./metacen-collector-vsat-data/logs:/logs
+      - /ttttbien2:/ttttbien2
+      - /ttttbien1:/ttttbien1
+    network_mode: host
+
+  metacen-dispatcher-process:
+    build: ../metacen-data-processing/metacen-dispatcher-process
+    container_name: metacen-dispatcher-process
+    image: metacen-dispatcher-process:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 4G
+    mem_reservation: 4G
+    ports:
+      - 9006:9006
+    volumes:
+      - ../metacen-data-processing/metacen-dispatcher-process/config:/config
+      - ../metacen-data-processing/metacen-dispatcher-process/logs:/logs
+      - /ttttbien1:/ttttbien1
+      - /mnt/data:/mnt/data
+    network_mode: host
+
+  metacen-content-process:
+    build: ../metacen-data-processing/metacen-content-process
+    container_name: metacen-content-process
+    image: metacen-content-process:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 4G
+    mem_reservation: 4G
+    ports:
+      - 9007:9007
+    volumes:
+      - ../metacen-data-processing/metacen-content-process/config:/config
+      - ../metacen-data-processing/metacen-content-process/logs:/logs
+      - /ttttbien1:/ttttbien1
+    network_mode: host
+
+  metacen-process-satellite-image:
+    build: ../metacen-data-processing/metacen-process-satellite-image
+    container_name: metacen-process-satellite-image
+    image: metacen-process-satellite-image:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 4G
+    mem_reservation: 4G
+    ports:
+      - 9008:9008
+    volumes:
+      - ../metacen-data-processing/metacen-process-satellite-image/config:/config
+      - ../metacen-data-processing/metacen-process-satellite-image/logs:/logs
+      - /ttttbien2:/ttttbien2
+      - /ttttbien1:/ttttbien1
+      - /mnt/data:/mnt/data
+    network_mode: host
+
+  metacen-process-vsat-media:
+    build: ../metacen-data-processing/metacen-process-vsat-media
+    container_name: metacen-process-vsat-media
+    image: metacen-process-vsat-media:latest
+    environment:
+        - TZ=Asia/Ho_Chi_Minh
+    mem_limit: 1G
+    mem_reservation: 1G
+    ports:
+      - 9009:9009
+    volumes:
+      - ../metacen-data-processing/metacen-process-vsat-media/config:/config
+      - ../metacen-data-processing/metacen-process-vsat-media/logs:/logs
+      - /ttttbien2:/ttttbien2
+      - /ttttbien1:/ttttbien1
+      - /mnt/data:/mnt/data
+    network_mode: host

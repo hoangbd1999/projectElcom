@@ -1,0 +1,8 @@
+beautifulsoup4
+lxml
+
+
+torch==1.10.1+cuda10.2
+torchvision
+torchaudio
+timm
