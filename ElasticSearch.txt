@@ -1,0 +1,1 @@
+https://github.com/macrozheng/mall/blob/master/mall-search/src/main/java/com/macro/mall/search/service/impl/EsProductServiceImpl.java#L110
